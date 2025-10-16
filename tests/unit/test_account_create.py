@@ -16,3 +16,19 @@ class TestAccount:
     def test_pesel_too_long(self):
         account = Account("Jane", "Doe", "1111111111111111111")
         assert account.pesel == "Invalid"
+
+    def test_pesel_is_None(self):
+        account = Account("Jane", "Doe", None)
+        assert account.pesel == "Invalid"
+
+    def test_promo(self):
+        account = Account("John", "Doe", "11111111111", PROM_XYZ)
+        assert account.balance == 50.0
+
+    def test_promo(self):
+        account = Account("John", "Doe", "11111111111", PRO)
+        assert account.balance == 0.0
+
+    def test_promo(self):
+        account = Account("John", "Doe", "11111111111", None)
+        assert account.balance == 0.0
