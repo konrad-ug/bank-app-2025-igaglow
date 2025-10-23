@@ -1,7 +1,8 @@
 from src.personal_account import PersonalAccount
 
+
 class TestAccount:
-    def test_personal_account_creation(self):
+    def test_account_creation(self):
         account = PersonalAccount("John", "Doe", "05242206607")
         assert account.first_name == "John"
         assert account.last_name == "Doe"
@@ -56,13 +57,3 @@ class TestAccount:
     def test_promo_case_sensitive(self):
         account = PersonalAccount("John", "Doe", "05242206607", "prom_abc")
         assert account.balance == 0.0
-
-
-
-
-
-
-
-
-
-
