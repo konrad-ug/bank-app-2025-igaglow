@@ -21,22 +21,6 @@ class TestAccount:
         account = PersonalAccount("Jane", "Doe", None)
         assert account.pesel == "Invalid"
 
-    # def test_promo(self):
-    #     account = Account("John", "Doe", "11111111111", "PROM_XYZ)
-    #     assert account.balance == 50.0
-    #
-    # def test_promo(self):
-    #     account = Account("John", "Doe", "11111111111", PRO)
-    #     assert account.balance == 0.0
-    #
-    # def test_promo(self):
-    #     account = Account("John", "Doe", "11111111111", None)
-    #     assert account.balance == 0.0
-
-    # def test_valid_promo_and_eligible_year(self):
-    #     account = PersonalAccount("John", "Doe", "05242206607", "PROM_ABC")
-    #     assert account.balance == 50.0
-
     def test_valid_promo_but_not_eligible_year(self):
         account = PersonalAccount("Jan", "Kowalski", "55010112345", "PROM_ABC")
         assert account.balance == 0.0
@@ -57,3 +41,21 @@ class TestAccount:
     def test_promo_case_sensitive(self):
         account = PersonalAccount("John", "Doe", "05242206607", "prom_abc")
         assert account.balance == 0.0
+
+    def test_transfer_express_enough_balance(self):
+        account = PersonalAccount("John", "Doe", "05242206607", "PROM_ABC")
+        account.balance = 100.0
+        account.transfer_express(20.0)
+        assert account.balance == 79.0
+
+    def test_transfer_express_not_enough_balance(self):
+        account = PersonalAccount("John", "Doe", "05242206607", "PROM_ABC")
+        account.balance = 100.0
+        account.transfer_express(200.0)
+        assert account.balance == 100.0
+
+    def test_transfer_express_fee_over_balance(self):
+        account = PersonalAccount("John", "Doe", "05242206607", "PROM_ABC")
+        account.balance = 100.0
+        account.transfer_express(100.0)
+        assert account.balance == -1.0
