@@ -6,6 +6,7 @@ class PersonalAccount(Account):
         self.last_name = last_name
         self.pesel = pesel if self.is_pesel_valid(pesel) else "Invalid"
         self.balance = 50.0 if (self.is_eligible_for_promo(self.pesel) and self.check_promo(promo_code)) else 0
+        self.history = []
 
     def is_pesel_valid(self, pesel):
         if isinstance(pesel, str) and len(pesel) == 11:
@@ -39,4 +40,17 @@ class PersonalAccount(Account):
         if sum <= 0 or self.balance - sum < 0:
             return
         self.balance -= sum + 1.0
+        self.history.append(sum * (-1))
+        self.history.append(-1.0)
 
+    def submit_for_loan(self, amount):
+        if amount <= 0:
+            return False
+        if self.history[-1] > 0 and self.history[-2] > 0 and self.history[-3] > 0:
+            self.balance += amount
+            return True
+        elif len(self.history) >=5:
+            if self.history[-1] + self.history[-2] + self.history[-3] + self.history[-4] + self.history[-5] > amount:
+                self.balance += amount
+                return True
+        return False
