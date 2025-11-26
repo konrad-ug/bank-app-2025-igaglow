@@ -17,3 +17,15 @@ class CompanyAccount(Account):
         self.balance -= sum + 5.0
         self.history.append(sum * (-1))
         self.history.append(-5.0)
+
+    def check_history_for_ZUS_transfer(self):
+        for i in self.history:
+            if i == -1775.0:
+                return True
+        return False
+
+    def take_loan(self, amount):
+        if self.balance > amount * 2 and self.check_history_for_ZUS_transfer():
+            self.balance += amount
+            return True
+        return False
