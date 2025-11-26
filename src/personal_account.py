@@ -43,14 +43,18 @@ class PersonalAccount(Account):
         self.history.append(sum * (-1))
         self.history.append(-1.0)
 
+    def _has_three_last_incoming_transfers(self):
+        return len(self.history) >= 3 and all(x > 0 for x in self.history[-3:])
+
+    def _five_last_transfers_sum_greater_than(self, amount):
+        return len(self.history) >= 5 and sum(self.history[-5:]) > amount
+
     def submit_for_loan(self, amount):
         if amount <= 0:
             return False
-        if self.history[-1] > 0 and self.history[-2] > 0 and self.history[-3] > 0:
+
+        if self._has_three_last_incoming_transfers() or self._five_last_transfers_sum_greater_than(amount):
             self.balance += amount
             return True
-        elif len(self.history) >=5:
-            if self.history[-1] + self.history[-2] + self.history[-3] + self.history[-4] + self.history[-5] > amount:
-                self.balance += amount
-                return True
+
         return False
