@@ -1,4 +1,4 @@
-from src.company_account import CompanyAccount
+from bank.src.company_account import CompanyAccount
 import pytest
 
 @pytest.fixture

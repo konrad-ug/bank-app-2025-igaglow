@@ -1,4 +1,4 @@
-from src.personal_account import PersonalAccount
+from bank.src.personal_account import PersonalAccount
 
 class AccountsRegistry:
     def __init__(self):

@@ -1,4 +1,4 @@
-from src.account import Account
+from bank.src.account import Account
 
 class TestAccountTransfer:
     def test_transfer_incoming(self):

@@ -1,4 +1,4 @@
-from src.account import Account
+from bank.src.account import Account
 
 class PersonalAccount(Account):
     def __init__(self, first_name, last_name, pesel, promo_code = None):
@@ -6,7 +6,7 @@ class PersonalAccount(Account):
         self.last_name = last_name
         self.pesel = pesel if self.is_pesel_valid(pesel) else "Invalid"
         self.balance = 50.0 if (self.is_eligible_for_promo(self.pesel) and self.check_promo(promo_code)) else 0
-        self.history = []
+        # self.history = []
 
     def is_pesel_valid(self, pesel):
         if isinstance(pesel, str) and len(pesel) == 11:
