@@ -1,6 +1,6 @@
 import pytest
-from src.accounts_registry import AccountsRegistry
-from src.personal_account import PersonalAccount
+from bank.src.account_registry import AccountsRegistry
+from bank.src.personal_account import PersonalAccount
 
 
 @pytest.fixture
