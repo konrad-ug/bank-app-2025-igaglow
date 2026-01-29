@@ -1,15 +1,40 @@
+import os
+import requests
+from datetime import date
 from bank.src.account import Account
 
 class CompanyAccount(Account):
-    def __init__(self, company_name, nip):
+    def __init__(self, company_name, nip, validate_mf=True):
         self.company_name = company_name
         self.nip = nip if self.is_nip_valid(nip) else "Invalid"
         self.history = []
+        self.balance = 0.0
+
+        if self.is_nip_valid(nip) and validate_mf:
+            if not self.check_nip_with_mf(nip):
+                raise ValueError("Company not registered!!")
 
     def is_nip_valid(self, nip):
-        if isinstance(nip, str) and len(nip) == 10:
-            return True
-        return False
+        return isinstance(nip, str) and len(nip) == 10
+
+    def check_nip_with_mf(self, nip):
+        """Sprawdza NIP w bazie MF. Zwraca True jeśli statusVat == 'Czynny'."""
+        mf_url = os.getenv("BANK_APP_MF_URL", "https://wl-test.mf.gov.pl")
+        today = date.today().isoformat()
+        url = f"{mf_url}/api/search/nip/{nip}?date={today}"
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+            print("MF API response:", data)  # logujemy dla przejrzystości
+
+            # MF API – jeśli znajdzie VAT status
+            status_vat = data.get("result", [{}])[0].get("statusVat", "")
+            return status_vat == "Czynny"
+        except Exception as e:
+            print("Error calling MF API:", e)
+            return False
 
     def transfer_express(self, sum):
         if sum <= 0 or self.balance - sum < 0:

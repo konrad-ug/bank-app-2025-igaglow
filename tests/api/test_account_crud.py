@@ -1,5 +1,6 @@
 import pytest
 import requests
+import random
 
 BASE_URL = "http://127.0.0.1:5000/api/accounts"
 TRANSFER_URL = f"{BASE_URL}/{{}}/transfer"
@@ -47,11 +48,16 @@ def test_get_account_by_pesel(create_test_account):
     assert data["surname"] == "Hetfield"
     assert "balance" in data
 
+def random_pesel():
+    return "".join(str(random.randint(0, 9)) for _ in range(11))
+
 def test_create_account_duplicate_pesel():
+    pesel = random_pesel()
+
     payload = {
         "name": "James",
         "surname": "Hetfield",
-        "pesel": "99999999999"
+        "pesel": pesel
     }
 
     r1 = requests.post(BASE_URL, json=payload)
@@ -59,8 +65,6 @@ def test_create_account_duplicate_pesel():
 
     assert r1.status_code == 201
     assert r2.status_code == 409
-
-
 
 
 def test_update_account(create_test_account):
