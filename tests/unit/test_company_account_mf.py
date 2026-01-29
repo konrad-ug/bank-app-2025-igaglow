@@ -5,7 +5,6 @@ from bank.src.company_account import CompanyAccount
 class TestCompanyAccountMF:
     @patch("bank.src.company_account.requests.get")
     def test_nip_valid_czynny(self, mock_get):
-        # symulujemy odpowiedź MF
         mock_get.return_value.json.return_value = {
             "result": [{"statusVat": "Czynny"}]
         }
@@ -16,7 +15,6 @@ class TestCompanyAccountMF:
 
     @patch("bank.src.company_account.requests.get")
     def test_nip_invalid_not_registered(self, mock_get):
-        # MF zwraca nieaktywny status
         mock_get.return_value.json.return_value = {
             "result": [{"statusVat": "Nieaktywny"}]
         }
@@ -26,6 +24,5 @@ class TestCompanyAccountMF:
             CompanyAccount("BadCompany", "1234567890")
 
     def test_short_nip_skips_mf(self):
-        # NIP nie ma 10 znaków → API MF NIE jest wywoływane
         account = CompanyAccount("ShortNip", "123")
         assert account.nip == "Invalid"

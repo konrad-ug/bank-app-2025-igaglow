@@ -4,13 +4,13 @@ from datetime import date
 from bank.src.account import Account
 
 class CompanyAccount(Account):
-    def __init__(self, company_name, nip):
+    def __init__(self, company_name, nip, validate_mf=True):
         self.company_name = company_name
         self.nip = nip if self.is_nip_valid(nip) else "Invalid"
         self.history = []
         self.balance = 0.0
 
-        if self.is_nip_valid(nip):
+        if self.is_nip_valid(nip) and validate_mf:
             if not self.check_nip_with_mf(nip):
                 raise ValueError("Company not registered!!")
 

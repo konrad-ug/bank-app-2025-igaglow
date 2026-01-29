@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture
 def account():
-    return CompanyAccount("Company", "1234567890")
+    return CompanyAccount("Company", "1234567890", validate_mf=False)
 
 class TestTakeloan:
 
