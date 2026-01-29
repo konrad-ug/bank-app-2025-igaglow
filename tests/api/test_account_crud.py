@@ -2,6 +2,8 @@ import pytest
 import requests
 import random
 
+pytestmark = pytest.mark.api
+
 BASE_URL = "http://127.0.0.1:5000/api/accounts"
 TRANSFER_URL = f"{BASE_URL}/{{}}/transfer"
 
