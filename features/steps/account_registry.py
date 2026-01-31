@@ -83,3 +83,13 @@ def check_balance(context, pesel, balance):
     response = requests.get(URL + f"/api/accounts/{pesel}")
     assert response.status_code == 200
     assert float(response.json()["balance"]) == float(balance)
+
+@when('I save accounts to database')
+def step_save_db(context):
+    resp = requests.post(URL + "/api/accounts/save")
+    assert resp.status_code == 200
+
+@when('I load accounts from database')
+def step_load_db(context):
+    resp = requests.post(URL + "/api/accounts/load")
+    assert resp.status_code == 200

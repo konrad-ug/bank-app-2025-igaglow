@@ -36,3 +36,12 @@ Feature: Account registry
     And I create an account using name: "bill", last name: "gates", pesel: "55050512345"
     When I perform "incoming" transfer to account with pesel: "55050512345" for amount: "100.50"
     Then Account with pesel "55050512345" has balance equal to "100.50"
+
+  Scenario: Persisting accounts in database
+    Given Account registry is empty
+    And I create an account using name: "Jan", last name: "Kowalski", pesel: "11111111111"
+    When I save accounts to database
+    And Account registry is empty
+    And I load accounts from database
+    Then Number of accounts in registry equals: "1"
+    And Account with pesel "11111111111" exists in registry
