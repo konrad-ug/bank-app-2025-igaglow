@@ -23,8 +23,8 @@ jobs:
       run: |
         export FLASK_APP=app/api.py
         export PYTHONPATH=$GITHUB_WORKSPACE
-        flask run &
-        sleep 5
+        python3 -m flask run > flask.log 2>&1 &
+        timeout 30s sh -c 'until curl -s localhost:5000; do sleep 1; done'
     - name: Execute Performance tests
       run: |
         python3 -m pytest tests/perf
