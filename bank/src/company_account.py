@@ -2,6 +2,8 @@ import os
 import requests
 from datetime import date
 from bank.src.account import Account
+from bank.src.smtp.smtp import SMTPClient
+
 
 class CompanyAccount(Account): # pragma: no cover
     def __init__(self, company_name, nip, validate_mf=True):
@@ -15,6 +17,8 @@ class CompanyAccount(Account): # pragma: no cover
         elif validate_mf:
             if not self.check_nip_with_mf(nip):
                 raise ValueError("Company not registered!!")
+
+    message_content_prefix = "Company account history"
 
     def is_nip_valid(self, nip):
         return isinstance(nip, str) and len(nip) == 10
@@ -59,3 +63,10 @@ class CompanyAccount(Account): # pragma: no cover
             self.balance += amount
             return True
         return False
+
+    # def send_history_via_email(self, email_address: str) -> bool:
+    #     today = date.today().isoformat()
+    #     subject = f"Account Transfer History {today}"
+    #     text = f"Company account history: {self.history}"
+    #     smtp_client = SMTPClient()
+    #     return smtp_client.send(subject, text, email_address)

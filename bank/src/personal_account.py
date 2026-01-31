@@ -1,4 +1,6 @@
 from bank.src.account import Account
+from datetime import date
+from bank.src.smtp.smtp import SMTPClient
 
 class PersonalAccount(Account):
     def __init__(self, first_name, last_name, pesel, promo_code = None):
@@ -7,6 +9,8 @@ class PersonalAccount(Account):
         self.pesel = pesel if self.is_pesel_valid(pesel) else "Invalid"
         self.balance = 50.0 if (self.is_eligible_for_promo(self.pesel) and self.check_promo(promo_code)) else 0
         self.history = []
+
+    message_content_prefix = "Personal account history"
 
     def is_pesel_valid(self, pesel):
         if isinstance(pesel, str) and len(pesel) == 11:
@@ -59,3 +63,10 @@ class PersonalAccount(Account):
 
         result = False
         return result
+
+    # def send_history_via_email(self, email_address: str) -> bool:
+    #     today = date.today().isoformat()
+    #     subject = f"Account Transfer History {today}"
+    #     text = f"Personal account history: {self.history}"
+    #     smtp_client = SMTPClient()
+    #     return smtp_client.send(subject, text, email_address)
