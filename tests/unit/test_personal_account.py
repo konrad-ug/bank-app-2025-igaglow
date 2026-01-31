@@ -57,3 +57,14 @@ class TestAccount:
         acc.balance = start_balance
         acc.transfer_express(amount)
         assert acc.balance == expected_balance
+
+    def test_submit_for_loan_returns_false_if_conditions_not_met(self):
+        account = PersonalAccount("John", "Doe", "05242206607")
+        account.history = []
+        result = account.submit_for_loan(100)  # amount > 0
+        assert result is False
+
+    def test_is_eligible_for_promo_invalid_month(self):
+        account = PersonalAccount("John", "Doe", "99132206607")
+        assert account.is_eligible_for_promo("99132206607") is False
+
