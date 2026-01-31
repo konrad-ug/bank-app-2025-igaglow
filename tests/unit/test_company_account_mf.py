@@ -26,3 +26,9 @@ class TestCompanyAccountMF:
     def test_short_nip_skips_mf(self):
         account = CompanyAccount("ShortNip", "123")
         assert account.nip == "Invalid"
+
+    @patch("bank.src.company_account.requests.get")
+    def test_short_nip_no_request(self, mock_get):
+        account = CompanyAccount("ShortNip", "123")
+        assert account.nip == "Invalid"
+        mock_get.assert_not_called()
