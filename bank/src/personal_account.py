@@ -57,4 +57,5 @@ class PersonalAccount(Account):
             self.balance += amount
             return True
 
-        return False
+        result = False
+        return result
