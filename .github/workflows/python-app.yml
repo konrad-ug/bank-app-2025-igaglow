@@ -43,9 +43,7 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        set -x
-        python -m coverage run -m pytest -m "not api"
-
-    - name: Check coverage
+        python3 -m coverage run --source=bank/src -m pytest tests/unit
+    - name: Check code coverage
       run: |
         python -m coverage report -m
