@@ -27,3 +27,14 @@ class Account:
 
         smtp_client = SMTPClient()
         return smtp_client.send(subject, text, email_address)
+
+    def to_dict(self):
+        return {
+            "name": getattr(self, "first_name", ""),
+            "surname": getattr(self, "last_name", ""),
+            "company_name": getattr(self, "company_name", None),
+            "pesel": getattr(self, "pesel", None),
+            "nip": getattr(self, "nip", None),
+            "balance": self.balance,
+            "history": self.history
+        }
