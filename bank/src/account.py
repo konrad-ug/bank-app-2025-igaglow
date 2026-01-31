@@ -1,3 +1,6 @@
+from datetime import date
+from bank.src.smtp.smtp import SMTPClient
+
 class Account:
     def __init__(self):
         self.balance = 0
@@ -14,3 +17,13 @@ class Account:
             return
         self.balance -= sum
         self.history.append(sum * -1)
+
+    message_content_prefix = "Account history"
+
+    def send_history_via_email(self, email_address) -> bool:
+        today = date.today().isoformat()
+        subject = f"Account Transfer History {today}"
+        text = f"{self.message_content_prefix}: {self.history}"
+
+        smtp_client = SMTPClient()
+        return smtp_client.send(subject, text, email_address)
